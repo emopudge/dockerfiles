@@ -1,8 +1,8 @@
 # Работа с Dockerfiles, Docker-образами и Docker-контейнерами
 
-<img width="960" height="760" alt="image" src="https://github.com/user-attachments/assets/799b5dd1-21dc-4c70-aafc-777fc97dd0e1" />
-
 В этом репозитории описаны удачные и неудачные практики работы с Docker
+
+<img width="960" height="760" alt="image" src="https://github.com/user-attachments/assets/799b5dd1-21dc-4c70-aafc-777fc97dd0e1" />
 
 ## Часть 0: Подготовка окружения
 
