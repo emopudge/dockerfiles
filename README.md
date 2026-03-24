@@ -31,7 +31,7 @@
 ЦП
 	Ядра:	10
 
-### Параметры виртуальной машины
+### Параметры виртуальной машины (ВМ)
 <img width="691" height="430" alt="image" src="https://github.com/user-attachments/assets/5f5455c0-eb31-4504-9b86-656950c1634f" />
 
 ### Запуск ВМ
@@ -44,9 +44,210 @@
 
  <img width="486" height="378" alt="image" src="https://github.com/user-attachments/assets/a211c03d-378a-4c9b-82bf-39b59b674edd" />
 
-После установки Ubuntu запускаю следующие программы в терминале:
+### Установка Docker на ВМ
 
-## Часть 1: Dockerfile
+После установки Ubuntu построчно запускаю следующие команды в терминале (Ctrl + Alt + T):
+
+```bash
+sudo apt update && sudo apt upgrade -y # обновление установленных программ
+sudo apt install -y git curl wget vim net-tools # установка базовых утилит для работы с Git, Docker, сетью
+ping -c 3 google.com # проверка интернета
+curl -fsSL https://get.docker.com | sh # официальный скрипт установки Docker
+sudo usermod -aG docker $USER # добавляем текущего пользователя в группу docker (чтобы не писать sudo перед docker)
+newgrp docker # изменение прав без перезагрузки
+docker --version 
+docker run hello-world # убедиться, что Docker жив
+sudo reboot # перезагрузка, чтобы все изменения применились корректно
+```
+
+### Создание структуры проекта на ВМ в терминале
+
+```bash
+mkdir ~/dockerfiles
+cd ~/dockerfiles # создаем и открываем нужную папку
+mkdir bad good # создаем подпапки
+
+# создаем файлы
+touch bad/Dockerfile
+touch bad/docker-compose.yml
+touch bad/.env
+
+touch good/Dockerfile
+touch good/docker-compose.yml
+touch good/.dockerignore
+
+# проверяем структуру
+ls -R
+```
+
+### Заполнение файлов
+Это можно сделать в редакторе nano / vim
+
+1. **bad dockerfile**
+
+```bash
+nano bad/Dockerfile
+```
+
+Вставляем следующий скрипт (детальный разбор будет ниже):
+
+```dockerfile
+FROM ubuntu:latest
+
+RUN apt-get update && apt-get install -y nginx
+
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+> Сохраняем: Ctrl + O + Enter
+> Закрываем: Ctrl + X
+
+По аналогии заполняем остальные файлы:
+
+2. **good dockerfile**
+   
+```dockerfile
+FROM ubuntu:22.04
+
+RUN apt-get update && \
+    apt-get install -y nginx && \
+    apt-get clean
+
+RUN useradd -m -u 1000 appuser
+
+USER appuser
+
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+3. **good/.dockerignore**
+
+```
+.git
+node_modules
+*.log
+.env
+__pycache__
+*.md
+```
+
+4. **bad/docker-compose.yml**
+
+```yaml
+version: '3.8'
+
+services:
+  web:
+    image: nginx:1.21
+    ports:
+      - "8080:80"
+    environment:
+      - DB_HOST=192.168.1.100
+      - DB_PASSWORD=secret123
+```
+
+5. **good/docker-compose.yml (с сетевой изоляцией)**
+```yaml
+version: '3.8'
+
+services:
+  frontend:
+    image: nginx:alpine
+    networks:
+      - public
+      
+  backend:
+    image: node:18
+    networks:
+      - public
+      - private
+      
+  database:
+    image: postgres:15
+    networks:
+      - private
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  public:
+    driver: bridge
+  private:
+    driver: bridge
+    internal: true
+
+volumes:
+  db-data:
+    name: myapp-database-data
+```
+
+6. **bad/.env**
+
+```
+DB_PASSWORD=secret123
+DB_HOST=192.168.1.100
+```
+
+### Тестирование сборки
+```bash
+cd ~/dockerfiles
+
+# собираем плохой образ
+cd bad
+docker build -t bad-app .
+
+# собираем хороший образ
+cd ../good
+docker build -t good-app .
+
+# сравниваем размеры
+docker images | grep -E "bad-app|good-app"
+
+# история слоев (покажет разницу в подходах)
+docker history bad-app
+docker history good-app
+```
+
+### Тестирование Docker Compose
+```bash
+cd ~/dockerfiles/good
+
+docker-compose up -d
+
+# проверяем статус
+docker-compose ps
+
+# смотрим логи
+docker-compose logs
+
+# останавливаем
+docker-compose down
+```
+
+### Пушим в репозитория на Git
+```bash
+cd ~/dockerfiles
+
+git init
+
+# добавляем все файлы
+git add .
+
+# коммит сообщение
+git commit -m "Initial commit: bad and good Docker practices"
+
+# добавляем удаленный репозиторий
+git remote add origin https://github.com/emopudge/dockerfiles.git
+
+# пушим
+git branch -M main
+git push -u origin main
+```
+
+## Часть 1: Обзор Dockerfile
 
 ### Плохие практики в Dockerfile
 
@@ -312,8 +513,14 @@ cd bad
 docker build -t bad-app .
 docker run -p 8080:80 bad-app
 ```
+
 2. Хороший вариант
 ```bash
 cd good
 docker-compose up --build
 ```
+
+# Ресурсы
+- [Docker Documentation](https://docs.docker.com/?spm=a2ty_o01.29997173.0.0.4b935171ktu8tJ)
+- [Dockerfile Best Practices](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/?spm=a2ty_o01.29997173.0.0.4b935171ktu8tJ)
+- [Compose File Reference](https://docs.docker.com/compose/compose-file/?spm=a2ty_o01.29997173.0.0.4b935171ktu8tJ)
