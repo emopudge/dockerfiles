@@ -18,8 +18,12 @@
 <img width="691" height="430" alt="image" src="https://github.com/user-attachments/assets/5f5455c0-eb31-4504-9b86-656950c1634f" />
 
 ### Запуск ВМ
+
 первым же делом ВМ захватила мою мышь!! и не отдавала! 
+
 > хост-кнопка - правый Ctrl, возвращает мышь. с помощью этого можно сделать скриншот ВМ с сохранением на Windows
+
 выбираю английский язык, интерактивную установку, скачиваю дополнительные драйвера для WiFi и медиа.
-> <img width="486" height="378" alt="image" src="https://github.com/user-attachments/assets/a211c03d-378a-4c9b-82bf-39b59b674edd" />
+
+ <img width="486" height="378" alt="image" src="https://github.com/user-attachments/assets/a211c03d-378a-4c9b-82bf-39b59b674edd" />
 
