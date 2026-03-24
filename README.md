@@ -207,24 +207,36 @@ cd ~/dockerfiles
 cd bad
 docker build -t bad-app .
 
-<img width="598" height="462" alt="image" src="https://github.com/user-attachments/assets/fe9a1fe3-620f-489a-a38d-acf78627bf1e" />
 
 
 # собираем хороший образ
 cd ../good
 docker build -t good-app .
+```
 
+```bash
 # сравниваем размеры
 docker images | grep -E "bad-app|good-app"
+```
 
+<img width="599" height="175" alt="image" src="https://github.com/user-attachments/assets/57611495-94af-4eb9-b5a2-75ae5407835e" />
+
+```bash
 # история слоев (покажет разницу в подходах)
 docker history bad-app
 docker history good-app
 ```
 
+<img width="594" height="437" alt="image" src="https://github.com/user-attachments/assets/77707cf7-c58d-42ce-9a65-90ed1604c1c3" />
+
+<img width="598" height="524" alt="image" src="https://github.com/user-attachments/assets/d8894636-fb08-4e57-a8d9-8ee6ab39fb88" />
+
+
+
+
 ### Тестирование Docker Compose
 ```bash
-cd ~/dockerfiles/good
+sudo apt install docker-compose
 
 docker-compose up -d
 
