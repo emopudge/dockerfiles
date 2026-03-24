@@ -108,6 +108,8 @@ CMD ["nginx", "-g", "daemon off;"]
 
 > Для чтения и проверки, что файл не пустой, используем команду `cat`
 
+<img width="603" height="161" alt="image" src="https://github.com/user-attachments/assets/5bf9128f-7fc1-43fc-86bf-bb56d29b3e44" />
+
 По аналогии заполняем остальные файлы:
 
 2. **good/Dockerfile**
@@ -204,6 +206,9 @@ cd ~/dockerfiles
 # собираем плохой образ
 cd bad
 docker build -t bad-app .
+
+<img width="598" height="462" alt="image" src="https://github.com/user-attachments/assets/fe9a1fe3-620f-489a-a38d-acf78627bf1e" />
+
 
 # собираем хороший образ
 cd ../good
