@@ -9,6 +9,7 @@
 <img width="960" height="760" alt="image" src="https://github.com/user-attachments/assets/799b5dd1-21dc-4c70-aafc-777fc97dd0e1" />
 
 ## Структура репозитория
+
 ├── bad/
 │ ├── Dockerfile
 │ ├── docker-compose.yml
