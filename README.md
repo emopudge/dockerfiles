@@ -80,10 +80,13 @@ touch good/.dockerignore
 ls -R
 ```
 
+<img width="319" height="178" alt="image" src="https://github.com/user-attachments/assets/8acbf45b-c09f-4a94-9c1e-fb333f9a119d" />
+
+
 ### Заполнение файлов
 Это можно сделать в редакторе nano / vim
 
-1. **bad dockerfile**
+1. **bad/Dockerfile**
 
 ```bash
 nano bad/Dockerfile
@@ -103,9 +106,11 @@ CMD ["nginx", "-g", "daemon off;"]
 
 > Закрываем: Ctrl + X
 
+> Для чтения и проверки, что файл не пустой, используем команду `cat`
+
 По аналогии заполняем остальные файлы:
 
-2. **good dockerfile**
+2. **good/Dockerfile**
    
 ```dockerfile
 FROM ubuntu:22.04
