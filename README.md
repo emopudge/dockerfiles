@@ -238,27 +238,46 @@ docker history good-app
 ```bash
 sudo apt install docker-compose
 
-docker-compose up -d
+docker compose up -d
 
 # проверяем статус
-docker-compose ps
-
-# смотрим логи
-docker-compose logs
-
-# останавливаем
-docker-compose down
+docker compose ps
 ```
+
+<img width="1200" height="110" alt="image" src="https://github.com/user-attachments/assets/bb8db888-65c7-4846-8a24-8fdba67eb9b1" />
+
+```bash
+# смотрим логи
+docker compose logs
+```
+
+<img width="1204" height="635" alt="image" src="https://github.com/user-attachments/assets/64180ad4-8b6c-4a18-8040-21b5d1af20e4" />
+
+```bash
+# останавливаем
+docker compose down
+```
+
+<img width="693" height="201" alt="image" src="https://github.com/user-attachments/assets/2935cec7-f7fe-4e44-a34e-416de539e798" />
+
 
 ### Пушим в репозитория на Git
 ```bash
 cd ~/dockerfiles
 
+# создаем пустой репозиторий
 git init
 
 # добавляем все файлы
 git add .
 
+# проверка, что все добавлено в stage area
+git status
+```
+
+<img width="558" height="288" alt="image" src="https://github.com/user-attachments/assets/bd483dd1-d0f4-4a72-bf1c-94f2086cac83" />
+
+```bash
 # коммит сообщение
 git commit -m "Initial commit: bad and good Docker practices"
 
