@@ -253,28 +253,28 @@ docker compose down
 ```bash
 cd ~/dockerfiles
 
-# создаем пустой репозиторий
+# Инициализация и настройка пользователя
 git init
+git config --global user.name "emopudge"
+git config --global user.email "твоя@почта.com"
 
-# добавляем все файлы
+# Добавление файлов
 git add .
 
-# проверка, что все добавлено в stage area
-git status
-```
-
-<img width="558" height="288" alt="image" src="https://github.com/user-attachments/assets/bd483dd1-d0f4-4a72-bf1c-94f2086cac83" />
-
-```bash
-# коммит сообщение
+# Коммит
 git commit -m "Initial commit: bad and good Docker practices"
 
-# добавляем удаленный репозиторий
+# Переименование ветки
+git branch -M main
+
+# Привязка к удалённому репозиторию
 git remote add origin https://github.com/emopudge/dockerfiles.git
 
-# пушим
-git branch -M main
-git push -u origin main
+# Синхронизация с удалённым репозиторием (если ветки разошлись)
+git pull origin main --rebase
+
+# Отправка на GitHub (использовать Personal Access Token вместо пароля)
+git push --set-upstream origin main
 ```
 
 ## Часть 1: Обзор Dockerfile
